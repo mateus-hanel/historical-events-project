@@ -29,7 +29,23 @@ def hello_world():
             list_topics_len=len(list_topics),
         )
     if request.method == "POST":
-        return request.form
+        parameters = request.form
+        lower_date = datetime.strptime(parameters["date-start"], "%Y-%m-%d")
+        upper_date = datetime.strptime(parameters["date-end"], "%Y-%m-%d")
+        print(lower_date)
+        df = connector.filter_date(lower_date, upper_date)
+
+        list_places, list_topics = connector.get_categories()
+
+        return render_template(
+            "simple.html",
+            tables=[df.to_html(classes="data")],
+            titles=df.columns.values,
+            list_places=list_places,
+            list_places_len=len(list_places),
+            list_topics=list_topics,
+            list_topics_len=len(list_topics),
+        )
 
 
 if __name__ == "__main__":
