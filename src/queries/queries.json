@@ -25,6 +25,23 @@
       "description": 1,
       "category1": 1,
       "category2": 1
-   }
+   },
+   "pipeline_get_categories":[
+      {"$group": {"_id": "$category1", "categories": {"$addToSet": "$category2"}}},
+      {
+          "$match": {
+              "$and": [
+                  {"categories": {"$gt": []}},
+                  {
+                      "$or": [
+                          {"_id": {"$eq": "By topic"}},
+                          {"_id": {"$eq": "By place"}}
+                      ]
+                  }
+              ]
+          }
+      },
+      { "$sort": { "_id": 1 } }
+  ]
 
  }

@@ -38,7 +38,17 @@ class MongoConnector:
         cursor = self.db["events_formatted_date"].find(query, fields)
 
         df = pd.DataFrame(list(cursor))
-        print(df.head())
+        return df
+
+    def get_categories(self):
+        pipeline = self.queries["pipeline_get_categories"]
+        categories = list(self.db["events_formatted_date"].aggregate(pipeline))
+        list_places = categories[0]["categories"]
+        list_places = [s.strip("=") for s in list_places]
+        list_places.sort()
+        list_topics = categories[1]["categories"]
+        list_topics.sort()
+        return list_places, list_topics
 
 
 if __name__ == "__main__":
@@ -50,3 +60,4 @@ if __name__ == "__main__":
     upper_date = datetime(1001, 1, 1, 3, 6, 28)
 
     connector.filter_date(lower_date, upper_date)
+    connector.get_categories()

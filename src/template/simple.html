@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <div style="width: 100%; overflow: hidden;">
+        <div class="container" style="width: 300px; float: left;height:250px;overflow-y:scroll;"> Places:<br>
+        {% for i in range(list_places_len) %}
+            <label for="val{{ i+1 }}" name="val{{ i+1 }}">
+                <input type="checkbox" id="val{{ i+1 }}" name="val{{ i+1 }}" value="{{ list_places[i].lower() }}">
+                {{ list_places[i] }}
+            </label><br>
+        {% endfor %}
+
+        </div>
+        <div class="container" style="width: 300px; float: left;height:250px;overflow-y:scroll;"> Topics:<br>
+            {% for i in range(list_topics_len) %}
+                <label for="val{{ i+1 }}" name="val{{ i+1 }}">
+                    <input type="checkbox" id="val{{ i+1 }}" name="val{{ i+1 }}" value="{{ list_topics[i].lower() }}">
+                    {{ list_topics[i] }}
+                </label><br>
+            {% endfor %}
+        
+        </div>
+        <div class="container" style="width: 300px; float: left;height:250px"> Start Date:<br>
+            
+            <input type="date" id="start" name="date-start" value="2018-07-22" min="0000-01-01" max="2020-12-31" /><br>
+            End Date:<br>
+            <input type="date" id="start" name="date-end" value="2018-07-22" min="0000-01-01" max="2020-12-31" /><br><br><br>
+            <form method="post">
+                <input type="submit" value="Search" >
+            </form>
+        </div>
+   </div>
+
+{% for table in tables %}
+            {{titles[loop.index]}}
+            {{ table|safe }}
+{% endfor %}
+</body>
+</html>
