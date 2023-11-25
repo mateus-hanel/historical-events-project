@@ -1,0 +1,30 @@
+{
+   "full_date": {"date": {"$regex": "'/', $options: 'i'"}},
+
+   "pipeline_convert_date":[
+      {"$match": {"date": {"$regex": "^[^ -]"}}},
+      {"$match": {"date": {"$regex": "/"}}},
+      {"$addFields": {"pad_length": {"$subtract": [10, {"$strLenCP": "$date"}]}}},
+      {"$addFields": {"pad": {"$substr": ["0000", 0, "$pad_length"]}}},
+      {"$addFields": {"date_padded": {"$concat": ["$pad", "$date"]}}},
+      {
+          "$addFields": {
+              "date_formatted": {"$dateFromString": {"dateString": "$date_padded"}}
+          }
+      },
+      {"$out": "events_formatted_date"}
+  ],
+  "date_filter":{
+      "$and": [
+         {"date_formatted": {"$gte": "LOWER_DATE"}},
+         {"date_formatted": {"$lte": "UPPER_DATE"}}
+      ]
+   },
+   "date_filter_fields": {
+      "date_formatted": 1,
+      "description": 1,
+      "category1": 1,
+      "category2": 1
+   }
+
+ }

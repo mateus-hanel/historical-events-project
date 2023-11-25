@@ -16,7 +16,7 @@ class MongoInserter:
             print("Data already imported")
             return
         print("Importing Data...")
-        with open(json_path, encoding='utf8') as f:
+        with open(json_path, encoding="utf8") as f:
             content = f.read()
             file_data = json.loads(content)
             print(type(file_data))
