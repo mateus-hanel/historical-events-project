@@ -12,6 +12,35 @@
               "date_formatted": {"$dateFromString": {"dateString": "$date_padded"}}
           }
       },
+      {"$addFields": {
+        "description": {
+            "$substr": [
+                "$description",
+                0,
+                {"$indexOfBytes": ["$description", "{{cite"]}
+            ]
+        }
+    }},
+    {"$addFields": {
+        "description": {
+            "$substr": [
+                "$description",
+                0,
+                {"$indexOfBytes": ["$description", "<a href"]}
+            ]
+        }
+    }},    
+    {"$addFields": {
+        "description": {
+            "$substr": [
+                "$description",
+                0,
+                {"$indexOfBytes": ["$description", "{{Cite"]}
+            ]
+        }
+    }},
+
+
       {"$out": "events_formatted_date"}
   ],
   "date_filter":{

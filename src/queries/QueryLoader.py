@@ -9,13 +9,3 @@ class QueryLoader:
 
     def get_queries(self):
         return self.queries
-
-
-test = {
-    "date_filter_fields": {
-        "date_formatted": 1,
-        "description": 1,
-        "category1": 1,
-        "category2": 1,
-    }
-}
