@@ -29,6 +29,34 @@ class MongoConnector:
         print("Collection created")
         return
 
+    def filter_data(self, lower_date, upper_date, parameters_place, parameters_topic):
+        query_date = self.queries["date_filter"]
+        fields = self.queries["date_filter_fields"]
+
+        query_date["$and"][0]["date_formatted"]["$gte"] = lower_date
+        query_date["$and"][1]["date_formatted"]["$lte"] = upper_date
+
+        categories = parameters_place + parameters_topic
+
+        if categories:
+            query_category = self.queries["query_category"]
+            query_category["category2"]["$in"] = categories
+        else:
+            query_category = {}
+
+        query_and = self.queries["query_and"]
+        query_and["$and"][0] = query_date
+        query_and["$and"][1] = query_category
+
+        print(query_and)
+        # quit()
+        cursor = self.db["events_formatted_date"].find(query_and, fields)
+
+        df = pd.DataFrame(list(cursor))
+        # df = df.drop("_id", axis=1)
+
+        return df
+
     def filter_date(self, lower_date, upper_date):
         query = self.queries["date_filter"]
         fields = self.queries["date_filter_fields"]
@@ -57,8 +85,10 @@ if __name__ == "__main__":
     connector.insert_historical_data()
     connector.create_events_formatted_date_collection()
 
-    lower_date = datetime(1000, 1, 1, 3, 6, 28)
+    lower_date = datetime(1, 1, 1, 3, 6, 28)
     upper_date = datetime(1001, 1, 1, 3, 6, 28)
 
-    connector.filter_date(lower_date, upper_date)
-    connector.get_categories()
+    # data = connector.filter_data(lower_date, upper_date, ["China"], ["Roman Empire"])
+    data = connector.filter_data(lower_date, upper_date, [], [])
+
+    print(data.head())

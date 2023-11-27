@@ -71,6 +71,12 @@
           }
       },
       { "$sort": { "_id": 1 } }
-  ]
+  ],
+  "query_category":{"category2":{"$in":"LIST_FIELDS"}},
+  "query_and":{
+    "$and": [
+        {}, {}
+    ]
+    }
 
  }

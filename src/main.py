@@ -13,8 +13,12 @@ connector.create_events_formatted_date_collection()
 @app.route("/", methods=["GET", "POST"])
 def hello_world():
     if request.method == "GET":
-        lower_date = datetime(2010, 1, 1)
-        upper_date = datetime(2020, 12, 31)
+        parameters = {}
+        parameters["date-start"] = "0100-01-01"
+        parameters["date-end"] = "0300-12-31"
+        parameters_place = []
+        parameters_topic = []
+
     if request.method == "POST":
         parameters = request.form
         keys = parameters.keys()
@@ -25,12 +29,11 @@ def hello_world():
             parameters[topic] for topic in keys if topic.startswith("topic")
         ]
 
-        print(parameters_place)
-        print(parameters_topic)
-
-        lower_date = datetime.strptime(parameters["date-start"], "%Y-%m-%d")
-        upper_date = datetime.strptime(parameters["date-end"], "%Y-%m-%d")
-    df = connector.filter_date(lower_date, upper_date)
+    lower_date = datetime.strptime(parameters["date-start"], "%Y-%m-%d")
+    upper_date = datetime.strptime(parameters["date-end"], "%Y-%m-%d")
+    df = connector.filter_data(
+        lower_date, upper_date, parameters_place, parameters_topic
+    )
 
     list_places, list_topics = connector.get_categories()
 
@@ -42,8 +45,8 @@ def hello_world():
         list_places_len=len(list_places),
         list_topics=list_topics,
         list_topics_len=len(list_topics),
-        date_start="2010-01-01",
-        date_end="2020-12-31",
+        date_start=parameters["date-start"],
+        date_end=parameters["date-end"],
     )
 
 

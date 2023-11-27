@@ -22,7 +22,7 @@
             <div class="container" style="width: 300px; float: left;height:250px;overflow-y:scroll;"> Topics (data until year 1300):<br>
                 {% for i in range(list_topics_len) %}
                     <label for="val{{ i+1 }}" name="val{{ i+1 }}">
-                        <input type="checkbox" id="place{{ i+1 }}" name="topic{{ i+1 }}" value="{{ list_topics[i].lower() }}">
+                        <input type="checkbox" id="place{{ i+1 }}" name="topic{{ i+1 }}" value="{{ list_topics[i] }}">
                         {{ list_topics[i] }}
                     </label><br>
                 {% endfor %}
