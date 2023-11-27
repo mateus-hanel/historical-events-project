@@ -38,6 +38,7 @@ class MongoConnector:
         cursor = self.db["events_formatted_date"].find(query, fields)
 
         df = pd.DataFrame(list(cursor))
+        df = df.drop("_id", axis=1)
         return df
 
     def get_categories(self):

@@ -5,10 +5,12 @@
     <title>Title</title>
 </head>
 <body>
+    <div>
+
     <form method="post">
 
         <div style="width: 100%; overflow: hidden;">
-            <div class="container" style="width: 300px; float: left;height:250px;overflow-y:scroll;"> Places:<br>
+            <div class="container" style="width: 300px; float: left;height:250px;overflow-y:scroll;"> Places (data until year 1300):<br>
             {% for i in range(list_places_len) %}
                 <label for="val{{ i+1 }}" name="val{{ i+1 }}">
                     <input type="checkbox" id="place{{ i+1 }}" name="place{{ i+1 }}" value="{{ list_places[i].lower() }}">
@@ -17,7 +19,7 @@
             {% endfor %}
 
             </div>
-            <div class="container" style="width: 300px; float: left;height:250px;overflow-y:scroll;"> Topics:<br>
+            <div class="container" style="width: 300px; float: left;height:250px;overflow-y:scroll;"> Topics (data until year 1300):<br>
                 {% for i in range(list_topics_len) %}
                     <label for="val{{ i+1 }}" name="val{{ i+1 }}">
                         <input type="checkbox" id="place{{ i+1 }}" name="topic{{ i+1 }}" value="{{ list_topics[i].lower() }}">
@@ -28,17 +30,23 @@
             </div>
             <div class="container" style="width: 300px; float: left;height:250px"> Start Date:<br>
                 
-                <input type="date" id="start" name="date-start" value="2010-01-01" min="0000-01-01" max="2020-12-31" /><br>
+                <input type="date" id="start" name="date-start" value="{{date_start}}" min="0000-01-01" max="2020-12-31" /><br>
                 End Date:<br>
-                <input type="date" id="start" name="date-end" value="2020-12-31" min="0000-01-01" max="2020-12-31" /><br><br><br>
+                <input type="date" id="start" name="date-end" value="{{date_end}}" min="0000-01-01" max="2020-12-31" /><br><br><br>
                     <input type="submit" value="Search" >
             </div>
+
+            
     </div>
     </form>
-
-{% for table in tables %}
+    <div class="container" style="width: 50%; float: left;padding:0;margin:0;"> Results:<br>
+        {% for table in tables %}
             {{titles[loop.index]}}
             {{ table|safe }}
-{% endfor %}
+        {% endfor %}                
+
+    </div>
+</div>
+
 </body>
 </html>
