@@ -53,20 +53,16 @@ class MongoConnector:
         cursor = self.db["events_formatted_date"].find(query_and, fields)
 
         df = pd.DataFrame(list(cursor))
-        # df = df.drop("_id", axis=1)
-
-        return df
-
-    def filter_date(self, lower_date, upper_date):
-        query = self.queries["date_filter"]
-        fields = self.queries["date_filter_fields"]
-        query["$and"][0]["date_formatted"]["$gte"] = lower_date
-        query["$and"][1]["date_formatted"]["$lte"] = upper_date
-
-        cursor = self.db["events_formatted_date"].find(query, fields)
-
-        df = pd.DataFrame(list(cursor))
         df = df.drop("_id", axis=1)
+        df["date_formatted"] = df["date_formatted"].astype(str).str[:10]
+        df = df.rename(
+            columns={
+                "description": "Description",
+                "category1": "Category Type",
+                "category2": "Category",
+                "date_formatted": "Date",
+            }
+        )
         return df
 
     def get_categories(self):

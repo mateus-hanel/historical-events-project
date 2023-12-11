@@ -8,10 +8,11 @@ app = Flask(__name__, template_folder="template")
 connector = MongoConnector("mongodb://localhost:27017/", "src/queries/queries.json")
 connector.insert_historical_data()
 connector.create_events_formatted_date_collection()
+list_places, list_topics = connector.get_categories()
 
 
 @app.route("/", methods=["GET", "POST"])
-def hello_world():
+def main_page():
     if request.method == "GET":
         parameters = {}
         parameters["date-start"] = "0100-01-01"
@@ -34,8 +35,6 @@ def hello_world():
     df = connector.filter_data(
         lower_date, upper_date, parameters_place, parameters_topic
     )
-
-    list_places, list_topics = connector.get_categories()
 
     return render_template(
         "simple.html",
